@@ -20,11 +20,22 @@ class BasePage:
         element.clear()
         element.send_keys(text)
 
+    def find_element(self, locator):
+        return self.wait.until(
+            EC.presence_of_element_located(locator)
+        )
+
+    def find_elements(self, locator):
+        return self.driver.find_elements(*locator)
+
     def js_click(self, locator):
         element = self.wait.until(
             EC.presence_of_element_located(locator)
         )
-        self.driver.execute_script("arguments[0].click();", element)
+        self.driver.execute_script(
+            "arguments[0].click();",
+            element
+        )
 
     def scroll_to_element(self, locator):
         element = self.wait.until(
