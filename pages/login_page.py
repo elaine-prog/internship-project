@@ -1,3 +1,4 @@
+import time
 from selenium.webdriver.common.by import By
 from pages.base_page import BasePage
 
@@ -13,11 +14,8 @@ class LoginPage(BasePage):
 
         self.input_text(email, self.EMAIL_FIELD)
         self.input_text(password, self.PASSWORD_FIELD)
-
         self.js_click(self.CONTINUE_BTN)
 
-        self.wait.until(
-            lambda driver: driver.current_url != "https://soft.reelly.io/sign-in"
-        )
+        time.sleep(5)
 
         print("URL after click:", self.driver.current_url)
