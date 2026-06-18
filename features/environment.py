@@ -1,33 +1,23 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
 from app.application import Application
 
+# BrowserStack imports (commented out for now)
+# from selenium.webdriver.chrome.options import Options
 
-def browser_init(context, scenario_name):
 
-    bs_user = 'elaineoblitey_GqhT0b'
-    bs_key = 'mPoZG7heZ47ii87ukpPg'
+def browser_init(context):
 
-    url = f'https://{bs_user}:{bs_key}@hub-cloud.browserstack.com/wd/hub'
+    # ===== LOCAL CHROME =====
 
-    options = Options()
-
-    bstack_options = {
-        "os": "OS X",
-        "osVersion": "Tahoe",
-        "browserName": "Safari",
-        "sessionName": scenario_name,
-    }
-
-    options.set_capability(
-        "bstack:options",
-        bstack_options
+    service = Service(
+        ChromeDriverManager().install()
     )
 
-    context.driver = webdriver.Remote(
-        command_executor=url,
-        options=options
+    context.driver = webdriver.Chrome(
+        service=service
     )
 
     context.driver.maximize_window()
@@ -35,10 +25,41 @@ def browser_init(context, scenario_name):
 
     context.app = Application(context.driver)
 
+    # ===== BROWSERSTACK =====
+    #
+    # bs_user = 'YOUR_USERNAME'
+    # bs_key = 'YOUR_ACCESS_KEY'
+    #
+    # url = f'https://{bs_user}:{bs_key}@hub-cloud.browserstack.com/wd/hub'
+    #
+    # options = Options()
+    #
+    # bstack_options = {
+    #     "os": "OS X",
+    #     "osVersion": "Tahoe",
+    #     "browserName": "Safari",
+    #     "sessionName": "Connect Developer Test",
+    # }
+    #
+    # options.set_capability(
+    #     "bstack:options",
+    #     bstack_options
+    # )
+    #
+    # context.driver = webdriver.Remote(
+    #     command_executor=url,
+    #     options=options
+    # )
+    #
+    # context.driver.maximize_window()
+    # context.driver.implicitly_wait(4)
+    #
+    # context.app = Application(context.driver)
+
 
 def before_scenario(context, scenario):
     print('\nStarted scenario: ', scenario.name)
-    browser_init(context, scenario.name)
+    browser_init(context)
 
 
 def before_step(context, step):
