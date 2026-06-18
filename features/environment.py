@@ -1,65 +1,75 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
 
 from app.application import Application
 
-# BrowserStack imports (commented out for now)
-# from selenium.webdriver.chrome.options import Options
 
+def browser_init(context, scenario_name):
 
-def browser_init(context):
-
-    # ===== LOCAL CHROME =====
-
-    service = Service(
-        ChromeDriverManager().install()
-    )
-
-    context.driver = webdriver.Chrome(
-        service=service
-    )
-
-    context.driver.maximize_window()
-    context.driver.implicitly_wait(4)
-
-    context.app = Application(context.driver)
-
-    # ===== BROWSERSTACK =====
+    # ===== LOCAL CHROME MOBILE EMULATION =====
     #
-    # bs_user = 'YOUR_USERNAME'
-    # bs_key = 'YOUR_ACCESS_KEY'
+    # from selenium.webdriver.chrome.service import Service
+    # from webdriver_manager.chrome import ChromeDriverManager
     #
-    # url = f'https://{bs_user}:{bs_key}@hub-cloud.browserstack.com/wd/hub'
-    #
-    # options = Options()
-    #
-    # bstack_options = {
-    #     "os": "OS X",
-    #     "osVersion": "Tahoe",
-    #     "browserName": "Safari",
-    #     "sessionName": "Connect Developer Test",
+    # mobile_emulation = {
+    #     "deviceName": "Nexus 5"
     # }
     #
-    # options.set_capability(
-    #     "bstack:options",
-    #     bstack_options
+    # chrome_options = webdriver.ChromeOptions()
+    #
+    # chrome_options.add_experimental_option(
+    #     "mobileEmulation",
+    #     mobile_emulation
     # )
     #
-    # context.driver = webdriver.Remote(
-    #     command_executor=url,
-    #     options=options
+    # service = Service(
+    #     ChromeDriverManager().install()
     # )
     #
-    # context.driver.maximize_window()
+    # context.driver = webdriver.Chrome(
+    #     service=service,
+    #     options=chrome_options
+    # )
+    #
     # context.driver.implicitly_wait(4)
     #
     # context.app = Application(context.driver)
 
+    # ===== BROWSERSTACK MOBILE WEB =====
+
+    bs_user = 'elaineoblitey_GqhT0b'
+    bs_key = 'mPoZG7heZ47ii87ukpPg'
+
+    url = f'https://{bs_user}:{bs_key}@hub-cloud.browserstack.com/wd/hub'
+
+    options = Options()
+
+    bstack_options = {
+        "deviceName": "Samsung Galaxy S23",
+        "osVersion": "13.0",
+        "realMobile": "true",
+        "browserName": "Chrome",
+        "sessionName": scenario_name,
+    }
+
+    options.set_capability(
+        "bstack:options",
+        bstack_options
+    )
+
+    context.driver = webdriver.Remote(
+        command_executor=url,
+        options=options
+    )
+
+    context.driver.implicitly_wait(4)
+
+    context.app = Application(context.driver)
+
 
 def before_scenario(context, scenario):
     print('\nStarted scenario: ', scenario.name)
-    browser_init(context)
+    browser_init(context, scenario.name)
 
 
 def before_step(context, step):

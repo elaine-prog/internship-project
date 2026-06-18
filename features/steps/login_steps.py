@@ -1,4 +1,4 @@
-from behave import given, when
+from behave import given, when, then
 
 
 @given('Open Reelly main page')
@@ -12,3 +12,8 @@ def log_in(context):
         "elaineoblitey@gmail.com",
         "Lane$unday23!!"
     )
+
+
+@then('Verify user is logged in')
+def verify_user_logged_in(context):
+    context.app.login_page.verify_user_logged_in()

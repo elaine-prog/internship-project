@@ -10,12 +10,11 @@ class LoginPage(BasePage):
     CONTINUE_BTN = (By.CSS_SELECTOR, "a[wized='loginButton']")
 
     def login(self, email, password):
-        print("Email entered:", email)
-
         self.input_text(email, self.EMAIL_FIELD)
         self.input_text(password, self.PASSWORD_FIELD)
         self.js_click(self.CONTINUE_BTN)
-
         time.sleep(5)
 
-        print("URL after click:", self.driver.current_url)
+    def verify_user_logged_in(self):
+        assert "find.reelly.io" in self.driver.current_url, \
+            f"User is not logged in. Current URL: {self.driver.current_url}"
