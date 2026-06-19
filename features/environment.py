@@ -7,12 +7,12 @@ from app.application import Application
 def browser_init(context, scenario_name):
 
     # ===== LOCAL CHROME MOBILE EMULATION =====
-    #
+
     # from selenium.webdriver.chrome.service import Service
     # from webdriver_manager.chrome import ChromeDriverManager
     #
     # mobile_emulation = {
-    #     "deviceName": "Nexus 5"
+    #     "deviceName": "iPhone SE"
     # }
     #
     # chrome_options = webdriver.ChromeOptions()

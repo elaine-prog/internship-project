@@ -19,3 +19,7 @@ def switch_to_new_tab(context):
 @then('Verify the right Connect the developer tab opens')
 def verify_right_connect_developer_tab_opens(context):
     context.app.main_page.verify_connect_developer_page_opened()
+
+@then('Verify Main Menu page opens')
+def verify_main_menu_page_opens(context):
+    context.app.main_page.verify_main_menu_page_opened()
